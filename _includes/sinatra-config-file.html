@@ -1,0 +1,98 @@
+
+<h1 id="label-Sinatra%3A%3AConfigFile">Sinatra::ConfigFile<span><a href="#label-Sinatra%3A%3AConfigFile">&para;</a> <a href="#documentation">&uarr;</a></span></h1>
+
+<p><code>Sinatra::ConfigFile</code> is an extension that allows you to load
+the application&#39;s configuration from YAML files.  It automatically
+detects if the files contains specific environment settings and it will use
+the corresponding to the current one.</p>
+
+<p>Within the application you can access those options through
+<code>settings</code>.  If you try to get the value for a setting that
+hasn&#39;t been defined in the config file for the current environment, you
+will get whatever it was set to in the application.</p>
+
+<h2 id="label-Usage">Usage<span><a href="#label-Usage">&para;</a> <a href="#documentation">&uarr;</a></span></h2>
+
+<p>Once you have written your configurations to a YAML file you can tell the
+extension to load them.  See below for more information about how these
+files are interpreted.</p>
+
+<p>For the examples, lets assume the following config.yml file:</p>
+
+<pre>greeting: Welcome to my file configurable application</pre>
+
+<h3 id="label-Classic+Application">Classic Application<span><a href="#label-Classic+Application">&para;</a> <a href="#documentation">&uarr;</a></span></h3>
+
+<pre class="ruby"><span class="ruby-identifier">require</span> <span class="ruby-string">&quot;sinatra&quot;</span>
+<span class="ruby-identifier">require</span> <span class="ruby-string">&quot;sinatra/config_file&quot;</span>
+
+<span class="ruby-identifier">config_file</span> <span class="ruby-string">&#39;path/to/config.yml&#39;</span>
+
+<span class="ruby-identifier">get</span> <span class="ruby-string">&#39;/&#39;</span> <span class="ruby-keyword">do</span>
+  <span class="ruby-ivar">@greeting</span> = <span class="ruby-identifier">settings</span>.<span class="ruby-identifier">greeting</span>
+  <span class="ruby-identifier">haml</span> :<span class="ruby-identifier">index</span>
+<span class="ruby-keyword">end</span>
+
+<span class="ruby-comment"># The rest of your classic application code goes here...</span>
+</pre>
+
+<h3 id="label-Modular+Application">Modular Application<span><a href="#label-Modular+Application">&para;</a> <a href="#documentation">&uarr;</a></span></h3>
+
+<pre class="ruby"><span class="ruby-identifier">require</span> <span class="ruby-string">&quot;sinatra/base&quot;</span>
+<span class="ruby-identifier">require</span> <span class="ruby-string">&quot;sinatra/config_file&quot;</span>
+
+<span class="ruby-keyword">class</span> <span class="ruby-constant">MyApp</span> <span class="ruby-operator">&lt;</span> <span class="ruby-constant">Sinatra</span><span class="ruby-operator">::</span><span class="ruby-constant">Base</span>
+  <span class="ruby-identifier">register</span> <span class="ruby-constant">Sinatra</span><span class="ruby-operator">::</span><span class="ruby-constant">ConfigFile</span>
+
+  <span class="ruby-identifier">config_file</span> <span class="ruby-string">&#39;path/to/config.yml&#39;</span>
+
+  <span class="ruby-identifier">get</span> <span class="ruby-string">&#39;/&#39;</span> <span class="ruby-keyword">do</span>
+    <span class="ruby-ivar">@greeting</span> = <span class="ruby-identifier">settings</span>.<span class="ruby-identifier">greeting</span>
+    <span class="ruby-identifier">haml</span> :<span class="ruby-identifier">index</span>
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-comment"># The rest of your modular application code goes here...</span>
+<span class="ruby-keyword">end</span>
+</pre>
+
+<h3 id="label-Config+File+Format">Config File Format<span><a href="#label-Config+File+Format">&para;</a> <a href="#documentation">&uarr;</a></span></h3>
+
+<p>In its most simple form this file is just a key-value list:</p>
+
+<pre>foo: bar
+something: 42
+nested:
+  a: 1
+  b: 2</pre>
+
+<p>But it also can provide specific environment configuration.  There are two
+ways to do that: at the file level and at the setting level.  They are
+illustrated, repsectively, as follows:</p>
+
+<pre>development:
+  foo: development
+  bar: bar
+test:
+  foo: test
+  bar: bar
+production:
+  foo: production
+  bar: bar</pre>
+
+<p>and</p>
+
+<pre>foo:
+  development: development
+  test: test
+  production: production
+bar: bar</pre>
+
+<p>In either case, <code>settings.foo</code> will return the environment name,
+and <code>settings.bar</code> will return <code>&quot;bar&quot;</code>.</p>
+
+<p>Be aware that if you have a different environment, besides development,
+test and production, you will also need to adjust the
+<code>environments</code> setting.  For instance, when you also have a
+staging environment:</p>
+
+<pre>set :environments, %w{development test production staging}</pre>

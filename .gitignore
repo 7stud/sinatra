@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # please add general patterns to your global ignore list
 # see https://github.com/github/gitignore#readme
 .DS_STORE
@@ -7,3 +8,9 @@
 /pkg
 /doc/api
 /Gemfile.lock
+=======
+_site
+_book
+_contrib
+_sinatra
+>>>>>>> upstream/master

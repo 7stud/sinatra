@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Why use bundler?
 # Well, not all development dependencies install on all rubies. Moreover, `gem
 # install sinatra --development` doesn't work, as it will also try to install
@@ -74,3 +75,13 @@ end
 platforms :ruby_18, :jruby do
   gem 'json' unless RUBY_VERSION > '1.9' # is there a jruby but 1.8 only selector?
 end
+=======
+source "https://rubygems.org" 
+
+gem "kramdown"
+gem "nokogiri", '>= 1.5.9'
+gem "jekyll", '>= 1.1.0'
+gem "rdoc", '~> 3.9.0'
+gem "haml"
+gem "thor"
+>>>>>>> upstream/master

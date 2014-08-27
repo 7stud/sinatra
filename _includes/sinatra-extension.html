@@ -1,0 +1,46 @@
+
+<h1 id="label-Sinatra%3A%3AExtension">Sinatra::Extension<span><a href="#label-Sinatra%3A%3AExtension">&para;</a> <a href="#documentation">&uarr;</a></span></h1>
+
+<p><code>Sinatra::Extension</code> is a mixin that provides some syntactic
+sugar for your extensions.  It allows you to call directly inside your
+extension module almost any <code>Sinatra::Base</code> method.  This means
+you can use <code>get</code> to define a route, <code>before</code> to
+define a before filter, <code>set</code> to define a setting, a so on.</p>
+
+<p>Is important to be aware that this mixin remembers the methods calls you
+make, and then, when your extension is registered, replays them on the
+Sinatra application that has been extended.  In order to do that, it
+defines a <code>registered</code> method, so, if your extension defines one
+too, remember to call <code>super</code>.</p>
+
+<h2 id="label-Usage">Usage<span><a href="#label-Usage">&para;</a> <a href="#documentation">&uarr;</a></span></h2>
+
+<p>Just require the mixin and extend your extension with it:</p>
+
+<pre class="ruby"><span class="ruby-identifier">require</span> <span class="ruby-string">&#39;sinatra/extension&#39;</span>
+
+<span class="ruby-keyword">module</span> <span class="ruby-constant">MyExtension</span>
+  <span class="ruby-identifier">extend</span> <span class="ruby-constant">Sinatra</span><span class="ruby-operator">::</span><span class="ruby-constant">Extension</span>
+
+  <span class="ruby-comment"># set some settings for development</span>
+  <span class="ruby-identifier">configure</span> :<span class="ruby-identifier">development</span> <span class="ruby-keyword">do</span>
+    <span class="ruby-identifier">set</span> :<span class="ruby-identifier">reload_stuff</span>, <span class="ruby-keyword">true</span>
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-comment"># define a route</span>
+  <span class="ruby-identifier">get</span> <span class="ruby-string">&#39;/&#39;</span> <span class="ruby-keyword">do</span>
+    <span class="ruby-string">&#39;Hello World&#39;</span>
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-comment"># The rest of your extension code goes here...</span>
+<span class="ruby-keyword">end</span>
+</pre>
+
+<p>You can also create an extension with the <code>new</code> method:</p>
+
+<pre>MyExtension = Sinatra::Extension.new do
+  # Your extension code goes here...
+end</pre>
+
+<p>This is useful when you just want to pass a block to
+<code>Sinatra::Base.register</code>.</p>

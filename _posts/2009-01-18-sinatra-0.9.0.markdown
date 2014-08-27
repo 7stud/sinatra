@@ -1,0 +1,155 @@
+---
+layout: post
+title: "What's New in Sinatra 0.9.0"
+author: Ryan Tomayko
+author_url: http://tomayko.com/about
+publish_date: Sunday, January 18, 2009
+---
+
+This is the first in a series of 0.9.x releases designed to move Sinatra toward
+a rock solid 1.0. While we were able to add a touch of new hotness in this
+release, the major focus has been on getting the codebase shaped up for future
+development. Many longstanding bugs and minor annoyances were corrected along
+the way.
+
+Sinatra's internal classes and methods have changed significantly in this
+release. Most apps written for 0.3.x will work just fine under the new codebase
+but we've begun adding deprecation warnings for things slated to be ripped out
+completely in 1.0. __Please test your apps before upgrading production
+environments to the 0.9.0 gem.__ We're committed to keeping existing apps
+running through 0.9.x so report compatibility issues through
+[the normal channels](/contributing.html).
+
+With that out of the way, here are some of the new features to look out for
+in 0.9.0.
+
+## Sinatra::Base and Proper Rack Citizenship
+
+Sinatra can now be used to build modular / reusable
+[Rack](http://rack.rubyforge.org/) applications and middleware components. This
+means that multiple Sinatra applications can now be run in isolation and
+co-exist peacefully with other Rack based frameworks.
+
+Requiring `'sinatra/base'` instead of `'sinatra'` causes a subset of Sinatra's
+features to be loaded. No methods are added to the top-level and the
+command-line / auto-running features are disabled. Subclassing `Sinatra::Base`
+creates a Rack component with the familiar Sinatra DSL methods available in
+class scope. These classes can then be run as Rack applications or used as
+middleware components.
+
+Proper documentation on this feature is in the works but here's a quick example
+for illustration:
+
+{% highlight ruby %}
+require 'sinatra/base'
+
+class Foo < Sinatra::Base
+  # all options are available for the setting:
+  enable :static, :session
+  set :root, File.dirname(__FILE__)
+
+  # each subclass has its own private middleware stack:
+  use Rack::Deflator
+
+  # instance methods are helper methods and are available from
+  # within filters, routes, and views:
+  def em(text)
+    "<em>#{text}</em>"
+  end
+
+  # routes are defined as usual:
+  get '/hello/:person' do
+    "Hello " + em(params[:person])
+  end
+end
+{% endhighlight %}
+
+That thing can be plugged in anywhere along a Rack pipeline. For instance,
+once Rails 2.3 ships, you'll be able to use Sinatra apps to build
+[Rails Metal](http://weblog.rubyonrails.org/2008/12/17/introducing-rails-metal).
+
+Jesse Newland and Jon Crosby are
+[already experimenting](http://blog.joncrosby.me/post/72451217/a-world-of-middleware).
+Very hot.
+
+## Nested Params
+
+Form parameters with subscripts are now parsed into a nested/recursive
+Hash structure. Here's a form:
+
+{% highlight html %}
+<form method='POST' action='/guestbook/'>
+  <input type='text' name='person[name]'>
+  <input type='text' name='person[email]'>
+  <textarea name='note'></textarea>
+</form>
+{% endhighlight %}
+
+It looks like this on the wire:
+
+    person[name]=Frank&person[email]=frank@theritz.com&message=Stay%20cool
+
+Sinatra turns it into a nested Hash structure when accessed through
+the `params` method:
+
+{% highlight ruby %}
+post '/guestbook/' do
+  params[:person]    # => { :name => 'Frank', :email => 'frank@theritz.com' }
+  "Hi #{person[:name]}! Thanks for signing my guestbook."
+end
+{% endhighlight %}
+
+This was a massively popular feature requests. Thanks to
+[Nicolás Sanguinetti](http://foca.tumblr.com/) for the patch and
+[Michael Fellinger](http://manveru.net/about_me) for the original
+implementation.
+
+## Routing with Regular Expressions
+
+The route declaration methods (`get`, `put`, `post`, `put`, `delete`) now
+take a Regexp as a pattern. Captures are made available to the route block
+at `params[:captures]`:
+
+{% highlight ruby %}
+get %r{/foo/(bar|baz)/(\d+)} do
+  # assuming: GET /foo/bar/42
+  params[:captures]  # => ['bar', 42]
+end
+{% endhighlight %}
+
+## Passing on a Route
+
+We added a new request-level `pass` method that immediately exits the current
+block and passes control to the next matching route. For example:
+
+{% highlight ruby %}
+get '/shoot/:person' do
+  pass unless %w[Kenny Sherrif].include?(params[:person])
+  "You shot #{params[:person]}."
+end
+
+get '/shoot/*' do
+  "Missed!"
+end
+{% endhighlight %}
+
+If no matching route is found after a `pass`, a `NotFound` exception is raised
+and the application 404s as if no route had matched in the first place.
+
+## Refined Test Framework
+
+Sinatra's testing support no longer depends on `Test::Unit` (or any
+specific test framework for that matter). Requiring `'sinatra/test'` brings in
+the [`Sinatra::Test` module](/api/classes/Sinatra/Test.html) and the
+[`Sinatra::TestHarness` class](/api/classes/Sinatra/TestHarness.html), which can
+be used as necessary to simulate requests and make assertions about responses.
+
+You can also require `sinatra/test/unit`, `sinatra/test/spec`,
+`sinatra/test/rspec`, or `sinatra/test/bacon` to setup a framework-specific
+testing environment. See the section on "Testing" in the [`README`](/intro.html)
+for examples.
+
+## More
+
+See the [`CHANGES`](./changes.html) file for a comprehensive list of
+enhancements, bug fixes, and deprecations.
