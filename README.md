@@ -481,8 +481,9 @@ Available Options:
 
   <dt>layout</dt>
   <dd>
-    Whether to use a layout (<tt>true</tt> or <tt>false</tt>). If it's a Symbol, specifies
-    what template to use. Example: <tt>erb :index, :layout => !request.xhr?</tt>
+    Whether to use a layout (<tt>true</tt> or <tt>false</tt>). If it's a
+    Symbol, specifies what template to use. Example:
+    <tt>erb :index, :layout => !request.xhr?</tt>
   </dd>
 
   <dt>content_type</dt>
@@ -587,7 +588,7 @@ get('/') { markdown :index }
   <tr>
     <td>Dependency</td>
     <td>
-      <a href="http://builder.rubyforge.org/" title="builder">builder</a>
+      <a href="https://github.com/jimweirich/builder" title="builder">builder</a>
     </td>
   </tr>
   <tr>
@@ -702,8 +703,8 @@ template, you almost always want to pass locals to it.
         <a href="https://github.com/rtomayko/rdiscount" title="RDiscount">RDiscount</a>,
         <a href="https://github.com/vmg/redcarpet" title="RedCarpet">RedCarpet</a>,
         <a href="http://deveiate.org/projects/BlueCloth" title="BlueCloth">BlueCloth</a>,
-        <a href="http://kramdown.rubyforge.org/" title="kramdown">kramdown</a>,
-        <a href="http://maruku.rubyforge.org/" title="maruku">maruku</a>
+        <a href="http://kramdown.gettalong.org/" title="kramdown">kramdown</a>,
+        <a href="https://github.com/bhollis/maruku" title="maruku">maruku</a>
     </td>
   </tr>
   <tr>
@@ -775,7 +776,7 @@ template than for the layout by passing the `:layout_engine` option.
 <table>
   <tr>
     <td>Dependency</td>
-    <td><a href="http://rdoc.rubyforge.org/" title="RDoc">RDoc</a></td>
+    <td><a href="http://rdoc.sourceforge.net/" title="RDoc">RDoc</a></td>
   </tr>
   <tr>
     <td>File Extension</td>
@@ -822,15 +823,15 @@ template than for the layout by passing the `:layout_engine` option.
   </tr>
 </table>
 
-Since you cannot call Ruby methods directly from an AsciiDoc template, you almost
-always want to pass locals to it.
+Since you cannot call Ruby methods directly from an AsciiDoc template, you
+almost always want to pass locals to it.
 
 #### Radius Templates
 
 <table>
   <tr>
     <td>Dependency</td>
-    <td><a href="http://radius.rubyforge.org/" title="Radius">Radius</a></td>
+    <td><a href="https://github.com/jlong/radius" title="Radius">Radius</a></td>
   </tr>
   <tr>
     <td>File Extension</td>
@@ -950,8 +951,9 @@ template than for the layout by passing the `:layout_engine` option.
   </tr>
 </table>
 
-It is not possible to call methods from MediaWiki markup, nor to pass locals to it.
-You therefore will usually use it in combination with another rendering engine:
+It is not possible to call methods from MediaWiki markup, nor to pass locals to
+it. You therefore will usually use it in combination with another rendering
+engine:
 
 ``` ruby
 erb :overview, :locals => { :text => mediawiki(:introduction) }
@@ -1087,8 +1089,8 @@ present(resource);
   </tr>
 </table>
 
-Since calling ruby methods is not idiomatic in WLang, you almost always want to pass locals
-to it. Layouts written in WLang and `yield` are supported, though.
+Since calling ruby methods is not idiomatic in WLang, you almost always want to
+pass locals to it. Layouts written in WLang and `yield` are supported, though.
 
 ### Accessing Variables in Templates
 
@@ -1128,8 +1130,7 @@ end
 
 This code is mostly equivalent to `erb :index, :layout => :post`.
 
-Passing blocks to rendering methods is most useful for creating nested
-layouts:
+Passing blocks to rendering methods is most useful for creating nested layouts:
 
 ``` ruby
 erb :main_layout, :layout => false do
@@ -1148,8 +1149,7 @@ end
 ```
 
 Currently, the following rendering methods accept a block: `erb`, `haml`,
-`liquid`, `slim `, `wlang`.
-Also the general `render` method accepts a block.
+`liquid`, `slim `, `wlang`. Also the general `render` method accepts a block.
 
 ### Inline Templates
 
@@ -1269,9 +1269,9 @@ get '/foo/*' do
 end
 ```
 
-After filters are evaluated after each request within the same
-context as the routes will be and can also modify the request and response. Instance
-variables set in before filters and routes are accessible by after filters:
+After filters are evaluated after each request within the same context as the
+routes will be and can also modify the request and response. Instance variables
+set in before filters and routes are accessible by after filters:
 
 ``` ruby
 after do
@@ -1472,8 +1472,7 @@ end
 ```
 
 Note that in the example above, you would ease testing and increase performance
-by simply moving `"bar"` into a helper used by both `/foo`
-and `/bar`.
+by simply moving `"bar"` into a helper used by both `/foo` and `/bar`.
 
 If you want the request to be sent to the same application instance rather than
 a duplicate, use `call!` instead of `call`.
@@ -1560,13 +1559,11 @@ connections = []
 
 get '/subscribe' do
   # register a client's interest in server events
-  stream(:keep_open) { |out| connections << out }
-
-  # purge dead connections
-  connections.reject!(&:closed?)
-
-  # acknowledge
-  "subscribed"
+  stream(:keep_open) do |out|
+    connections << out
+    # purge dead connections
+    connections.reject!(&:closed?)
+  end
 end
 
 post '/:message' do
@@ -1598,9 +1595,8 @@ This logger will automatically take your Rack handler's logging settings into
 account. If logging is disabled, this method will return a dummy object, so
 you do not have to worry about it in your routes and filters.
 
-Note that logging is only enabled for `Sinatra::Application` by
-default, so if you inherit from `Sinatra::Base`, you probably want to
-enable it yourself:
+Note that logging is only enabled for `Sinatra::Application` by default, so if
+you inherit from `Sinatra::Base`, you probably want to enable it yourself:
 
 ``` ruby
 class MyApp < Sinatra::Base
@@ -1731,8 +1727,8 @@ end
 ```
 
 To properly use caches, you should consider using `etag` or `last_modified`.
-It is recommended to call those helpers *before* doing any heavy lifting, as they
-will immediately flush a response if the client already has the current
+It is recommended to call those helpers *before* doing any heavy lifting, as
+they will immediately flush a response if the client already has the current
 version in its cache:
 
 ``` ruby
@@ -1794,7 +1790,8 @@ etag '', :new_resource => true, :kind => :weak
 
 ### Sending Files
 
-To return the contents of a file as the response, you can use the `send_file` helper method:
+To return the contents of a file as the response, you can use the `send_file`
+helper method:
 
 ``` ruby
 get '/' do
@@ -1818,12 +1815,13 @@ The options are:
     <dd>Value for Last-Modified header, defaults to the file's mtime.</dd>
 
   <dt>type</dt>
-    <dd>Value for Content-Type header, guessed from the file extension if missing.</dd>
+    <dd>Value for Content-Type header, guessed from the file extension if
+    missing.</dd>
 
   <dt>disposition</dt>
     <dd>
-      Value for Content-Disposition header, possible values: <tt>nil</tt> (default),
-      <tt>:attachment</tt> and <tt>:inline</tt>
+      Value for Content-Disposition header, possible values: <tt>nil</tt>
+      (default), <tt>:attachment</tt> and <tt>:inline</tt>
     </dd>
 
   <dt>length</dt>
@@ -1834,8 +1832,8 @@ The options are:
       Status code to be sent. Useful when sending a static file as an error page.
 
       If supported by the Rack handler, other means than streaming from the Ruby
-      process will be used. If you use this helper method, Sinatra will automatically
-      handle range requests.
+      process will be used. If you use this helper method, Sinatra will
+      automatically handle range requests.
     </dd>
 </dl>
 
@@ -1877,8 +1875,7 @@ get '/foo' do
 end
 ```
 
-Some options, like `script_name` or `path_info`, can also be
-written:
+Some options, like `script_name` or `path_info`, can also be written:
 
 ``` ruby
 before { request.path_info = "/" }
@@ -1921,9 +1918,8 @@ end
 
 ### Dealing with Date and Time
 
-Sinatra offers a `time_for` helper method that generates a Time object
-from the given value. It is also able to convert `DateTime`, `Date` and
-similar classes:
+Sinatra offers a `time_for` helper method that generates a Time objectfrom the
+given value. It is also able to convert `DateTime`, `Date` and similar classes:
 
 ``` ruby
 get '/' do
@@ -2103,11 +2099,11 @@ set :protection, :session => true
   </dd>
   <dd>Disabled by default.</dd>
 
-  <dt>add_charsets</dt>
+  <dt>add_charset</dt>
   <dd>
     Mime types the <tt>content_type</tt> helper will automatically add the charset info to.
     You should add to it rather than overriding this option:
-    <tt>settings.add_charsets << "application/foobar"</tt>
+    <tt>settings.add_charset << "application/foobar"</tt>
   </dd>
 
   <dt>app_file</dt>
@@ -2117,7 +2113,9 @@ set :protection, :session => true
   </dd>
 
   <dt>bind</dt>
-  <dd>IP address to bind to (default: <tt>0.0.0.0</tt> <em>or</em> <tt>localhost</tt> if your `environment` is set to development.). Only used for built-in server.</dd>
+  <dd>IP address to bind to (default: <tt>0.0.0.0</tt> <em>or</em>
+  <tt>localhost</tt> if your `environment` is set to development). Only used
+  for built-in server.</dd>
 
   <dt>default_encoding</dt>
   <dd>Encoding to assume if unknown (defaults to <tt>"utf-8"</tt>).</dd>
@@ -2127,8 +2125,8 @@ set :protection, :session => true
 
   <dt>environment</dt>
   <dd>
-    Current environment. Defaults to <tt>ENV['RACK_ENV']</tt>, or <tt>"development"</tt> if
-    not available.
+    Current environment. Defaults to <tt>ENV['RACK_ENV']</tt>, or
+    <tt>"development"</tt> if not available.
   </dd>
 
   <dt>logging</dt>
@@ -2158,7 +2156,8 @@ set :protection, :session => true
   </dd>
 
   <dt>protection</dt>
-  <dd>Whether or not to enable web attack protections. See protection section above.</dd>
+  <dd>Whether or not to enable web attack protections. See protection section
+  above.</dd>
 
   <dt>public_dir</dt>
   <dd>Alias for <tt>public_folder</tt>. See below.</dd>
@@ -2172,12 +2171,14 @@ set :protection, :session => true
 
   <dt>reload_templates</dt>
   <dd>
-    Whether or not to reload templates between requests. Enabled in development mode.
+    Whether or not to reload templates between requests. Enabled in development
+    mode.
   </dd>
 
   <dt>root</dt>
   <dd>
-    Path to project root folder. Inferred from <tt>app_file</tt> setting if not set.
+    Path to project root folder. Inferred from <tt>app_file</tt> setting if not
+    set.
   </dd>
 
   <dt>raise_errors</dt>
@@ -2209,14 +2210,13 @@ set :protection, :session => true
 
   <dt>show_exceptions</dt>
   <dd>
-    Show a stack trace in the browser when an exception
-    happens. Enabled by default when <tt>environment</tt>
-    is set to <tt>"development"</tt>, disabled otherwise.
+    Show a stack trace in the browser when an exception happens. Enabled by
+    default when <tt>environment</tt> is set to <tt>"development"</tt>,
+    disabled otherwise.
   </dd>
   <dd>
-    Can also be set to <tt>:after_handler</tt> to trigger
-    app-specified error handling before showing a stack
-    trace in the browser.
+    Can also be set to <tt>:after_handler</tt> to trigger app-specified error
+    handling before showing a stack trace in the browser.
   </dd>
 
   <dt>static</dt>
@@ -2224,15 +2224,14 @@ set :protection, :session => true
   <dd>Disable when using a server able to do this on its own.</dd>
   <dd>Disabling will boost performance.</dd>
   <dd>
-    Enabled per default in classic style, disabled for
-    modular apps.
+    Enabled per default in classic style, disabled for modular apps.
   </dd>
 
   <dt>static_cache_control</dt>
   <dd>
-    When Sinatra is serving static files, set this to add
-    <tt>Cache-Control</tt> headers to the responses. Uses the
-    <tt>cache_control</tt> helper. Disabled by default.
+    When Sinatra is serving static files, set this to add <tt>Cache-Control</tt>
+    headers to the responses. Uses the <tt>cache_control</tt> helper. Disabled
+    by default.
   </dd>
   <dd>
     Use an explicit array when setting multiple values:
@@ -2263,13 +2262,12 @@ set :protection, :session => true
 
 ## Environments
 
-There are three predefined `environments`: `"development"`,
-`"production"` and `"test"`. Environments can be set
-through the `RACK_ENV` environment variable. The default value is
-`"development"`. In the `"development"` environment all templates are reloaded between
-requests, and special `not_found` and `error` handlers
-display stack traces in your browser.
-In the `"production"` and `"test"` environments, templates are cached by default.
+There are three predefined `environments`: `"development"`, `"production"` and
+`"test"`. Environments can be set through the `RACK_ENV` environment variable.
+The default value is `"development"`. In the `"development"` environment all
+templates are reloaded between requests, and special `not_found` and `error`
+handlers display stack traces in your browser. In the `"production"` and
+`"test"` environments, templates are cached by default.
 
 To run different environments, set the `RACK_ENV` environment variable:
 
@@ -2311,13 +2309,13 @@ end
 
 The `error` handler is invoked any time an exception is raised from a route
 block or a filter. But note in development it will only run if you set the
-show exceptions option to `:after_handler`.
+show exceptions option to `:after_handler`:
 
 ```ruby
 set :show_exceptions, :after_handler
 ```
 
-The exception object can be obtained from the `sinatra.error` Rack variable.
+The exception object can be obtained from the `sinatra.error` Rack variable:
 
 ``` ruby
 error do
@@ -2373,7 +2371,7 @@ and additional debugging information in your browser.
 
 ## Rack Middleware
 
-Sinatra rides on [Rack](http://rack.rubyforge.org/), a minimal standard
+Sinatra rides on [Rack](http://rack.github.io/), a minimal standard
 interface for Ruby web frameworks. One of Rack's most interesting capabilities
 for application developers is support for "middleware" -- components that sit
 between the server and your application monitoring and/or manipulating the
@@ -2395,7 +2393,7 @@ end
 ```
 
 The semantics of `use` are identical to those defined for the
-[Rack::Builder](http://rack.rubyforge.org/doc/classes/Rack/Builder.html) DSL
+[Rack::Builder](http://rubydoc.info/github/rack/rack/master/Rack/Builder) DSL
 (most frequently used from rackup files). For example, the `use` method
 accepts multiple/variable args as well as blocks:
 
@@ -2450,8 +2448,8 @@ class MyAppTest < Test::Unit::TestCase
 end
 ```
 
-Note: If you are using Sinatra in the modular style, replace `Sinatra::Application`
-above with the class name of your app.
+Note: If you are using Sinatra in the modular style, replace
+`Sinatra::Application` above with the class name of your app.
 
 ## Sinatra::Base - Middleware, Libraries, and Modular Apps
 
@@ -2476,8 +2474,8 @@ class MyApp < Sinatra::Base
 end
 ```
 
-The methods available to `Sinatra::Base` subclasses are exactly the same as those
-available via the top-level DSL. Most top-level apps can be converted to
+The methods available to `Sinatra::Base` subclasses are exactly the same as
+those available via the top-level DSL. Most top-level apps can be converted to
 `Sinatra::Base` components with two modifications:
 
 * Your file should require `sinatra/base` instead of `sinatra`;
@@ -2491,7 +2489,7 @@ including the built-in server. See
 [Configuring Settings](http://sinatra.github.com/configuration.html)
 for details on available options and their behavior. If you want
 behavior more similar to when you define your app at the top level (also
-know as Classic style), you
+known as Classic style), you
 can subclass `Sinatra::Application`.
 
 ``` ruby
@@ -2509,10 +2507,10 @@ end
 Contrary to common belief, there is nothing wrong with the classic style. If it
 suits your application, you do not have to switch to a modular application.
 
-The main disadvantage of using the classic style rather than the modular style is that
-you will only have one Sinatra application per Ruby process. If you plan to use
-more than one, switch to the modular style. There is no reason you cannot mix
-the modular and the classic styles.
+The main disadvantage of using the classic style rather than the modular style
+is that you will only have one Sinatra application per Ruby process. If you
+plan to use more than one, switch to the modular style. There is no reason you
+cannot mix the modular and the classic styles.
 
 If switching from one style to the other, you should be aware of slightly
 different default settings:
@@ -2634,9 +2632,9 @@ A `config.ru` file is recommended if:
 * You want to use more than one subclass of `Sinatra::Base`.
 * You want to use Sinatra only for middleware, and not as an endpoint.
 
-**There is no need to switch to a `config.ru` simply because you
-switched to the modular style, and you don't have to use the modular style for running
-with a `config.ru`.**
+**There is no need to switch to a `config.ru` simply because you switched to
+the modular style, and you don't have to use the modular style for running with
+a `config.ru`.**
 
 ### Using Sinatra as Middleware
 
@@ -2857,9 +2855,9 @@ The following Ruby versions are officially supported:
     until the release of Sinatra 2.0.
   </dd>
 
-  <dt>Ruby 2.0.0</dt>
+  <dt>Ruby 2.x</dt>
   <dd>
-    2.0.0 is fully supported and recommended. There are currently no plans to drop
+    2.x is fully supported and recommended. There are currently no plans to drop
     official support for it.
   </dd>
 
@@ -2890,9 +2888,9 @@ known to run Sinatra:
 Not being officially supported means if things only break there and not on a
 supported platform, we assume it's not our issue but theirs.
 
-We also run our CI against ruby-head (the upcoming 2.1.0), but we can't
-guarantee anything, since it is constantly moving. Expect 2.1.0 to be fully
-supported.
+We also run our CI against ruby-head (future releases of MRI), but we can't
+guarantee anything, since it is constantly moving. Expect upcoming 2.x releases
+to be fully supported.
 
 Sinatra should work on any operating system supported by the chosen Ruby
 implementation.

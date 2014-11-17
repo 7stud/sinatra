@@ -487,7 +487,7 @@ get('/') { markdown :index }
   <tr>
     <td>Зависимости</td>
     <td>
-      <a href="http://builder.rubyforge.org/" title="builder">builder</a>
+      <a href="https://github.com/jimweirich/builder" title="builder">builder</a>
     </td>
   </tr>
   <tr>
@@ -602,8 +602,8 @@ get('/') { markdown :index }
         <a href="https://github.com/rtomayko/rdiscount" title="RDiscount">RDiscount</a>,
         <a href="https://github.com/vmg/redcarpet" title="RedCarpet">RedCarpet</a>,
         <a href="http://deveiate.org/projects/BlueCloth" title="BlueCloth">BlueCloth</a>,
-        <a href="http://kramdown.rubyforge.org/" title="kramdown">kramdown</a>,
-        <a href="http://maruku.rubyforge.org/" title="maruku">maruku</a>
+        <a href="http://kramdown.gettalong.org/" title="kramdown">kramdown</a>,
+        <a href="https://github.com/bhollis/maruku" title="maruku">maruku</a>
     </td>
   </tr>
   <tr>
@@ -678,7 +678,7 @@ erb :overview, :locals => { :text => textile(:introduction) }
 <table>
   <tr>
     <td>Зависимости</td>
-    <td><a href="http://rdoc.rubyforge.org/" title="RDoc">RDoc</a></td>
+    <td><a href="http://rdoc.sourceforge.net/" title="RDoc">RDoc</a></td>
   </tr>
   <tr>
     <td>Расширения файлов</td>
@@ -735,7 +735,7 @@ erb :overview, :locals => { :text => rdoc(:introduction) }
 <table>
   <tr>
     <td>Зависимости</td>
-    <td><a href="http://radius.rubyforge.org/" title="Radius">Radius</a></td>
+    <td><a href="https://github.com/jlong/radius" title="Radius">Radius</a></td>
   </tr>
   <tr>
     <td>Расширения файлов</td>
@@ -1426,13 +1426,11 @@ connections = []
 
 get '/subscribe' do
   # регистрация клиента
-  stream(:keep_open) { |out| connections << out }
-
-  # удаление "мертвых клиентов"
-  connections.reject!(&:closed?)
-
-  # допуск
-  "subscribed"
+  stream(:keep_open) do |out|
+    connections << out }
+    # удаление "мертвых клиентов"
+    connections.reject!(&:closed?)
+  end
 end
 
 post '/message' do
@@ -1970,11 +1968,11 @@ set :protection, :except => [:path_traversal, :session_hijacking]
   </dd>
   <dd>Отключено по умолчанию.</dd>
 
-  <dt>add_charsets</dt>
+  <dt>add_charset</dt>
   <dd>
     mime-типы, к которым метод <tt>content_type</tt> будет автоматически добавлять
     информацию о кодировке. Вам следует добавлять значения к этой опции
-    вместо ее переопределения: <tt>settings.add_charsets &lt;&lt; "application/foobar"</tt>
+    вместо ее переопределения: <tt>settings.add_charset &lt;&lt; "application/foobar"</tt>
   </dd>
 
   <dt>app_file</dt>
@@ -2217,7 +2215,7 @@ Sinatra устанавливает специальные `not_found` и `error`
 
 ## Rack "прослойки"
 
-Sinatra использует [Rack](http://rack.rubyforge.org/), минимальный стандартный
+Sinatra использует [Rack](http://rack.github.io/), минимальный стандартный
 интерфейс для веб-фреймворков на Ruby. Одной из самых интересных для
 разработчиков возможностей Rack является поддержка "прослоек" ("middleware") —
 компонентов, находящихся "между" сервером и вашим приложением, которые
@@ -2239,7 +2237,7 @@ end
 ```
 
 Семантика `use` идентична той, что определена для
-[Rack::Builder](http://rack.rubyforge.org/doc/classes/Rack/Builder.html) DSL
+[Rack::Builder](http://rubydoc.info/github/rack/rack/master/Rack/Builder) DSL
 (чаще всего используется в rackup файлах). Например, метод `use` принимает как
 множественные переменные, так и блоки:
 
@@ -2791,7 +2789,7 @@ SemVerTag.
 * [Twitter](http://twitter.com/sinatra)
 * [Группы рассылки](http://groups.google.com/group/sinatrarb/topics)
 * [#sinatra](irc://chat.freenode.net/#sinatra) на http://freenode.net
-* [Sinatra Book](http://sinatra-book.gittr.com) учебник и сборник рецептов
+* [Sinatra Book](https://github.com/sinatra/sinatra-book/) учебник и сборник рецептов
 * [Sinatra Recipes](http://recipes.sinatrarb.com/) сборник рецептов
 * API документация к [последнему релизу](http://rubydoc.info/gems/sinatra)
   или [текущему HEAD](http://rubydoc.info/github/sinatra/sinatra) на

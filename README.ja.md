@@ -557,7 +557,7 @@ get('/') { markdown :index }
   <tr>
     <td>依存</td>
     <td>
-      <a href="http://builder.rubyforge.org/" title="builder">builder</a>
+      <a href="https://github.com/jimweirich/builder" title="builder">builder</a>
     </td>
   </tr>
   <tr>
@@ -673,8 +673,8 @@ LiquidテンプレートからRubyのメソッド(`yield`を除く)を呼び出�
         <a href="https://github.com/rtomayko/rdiscount" title="RDiscount">RDiscount</a>,
         <a href="https://github.com/vmg/redcarpet" title="RedCarpet">RedCarpet</a>,
         <a href="http://deveiate.org/projects/BlueCloth" title="BlueCloth">BlueCloth</a>,
-        <a href="http://kramdown.rubyforge.org/" title="kramdown">kramdown</a>,
-        <a href="http://maruku.rubyforge.org/" title="maruku">maruku</a>
+        <a href="http://kramdown.gettalong.org/" title="kramdown">kramdown</a>,
+        <a href="https://github.com/bhollis/maruku" title="maruku">maruku</a>
     </td>
   </tr>
   <tr>
@@ -742,7 +742,7 @@ TexttileからはRubyを呼ぶことができないので、Textileで書かれ�
 <table>
   <tr>
     <td>依存</td>
-    <td><a href="http://rdoc.rubyforge.org/" title="RDoc">RDoc</a></td>
+    <td><a href="http://rdoc.sourceforge.net/" title="RDoc">RDoc</a></td>
   </tr>
   <tr>
     <td>ファイル拡張子</td>
@@ -795,7 +795,7 @@ AsciiDocテンプレートからRubyのメソッドを直接呼び出すこと�
 <table>
   <tr>
     <td>依存</td>
-    <td><a href="http://radius.rubyforge.org/" title="Radius">Radius</a></td>
+    <td><a href="https://github.com/jlong/radius" title="Radius">Radius</a></td>
   </tr>
   <tr>
     <td>ファイル拡張子</td>
@@ -1439,13 +1439,11 @@ connections = []
 
 get '/subscribe' do
   # サーバイベントにおけるクライアントの関心を登録
-  stream(:keep_open) { |out| connections << out }
-
-  # 死んでいるコネクションを排除
-  connections.reject!(&:closed?)
-
-  # 肯定応答
-  "subscribed"
+  stream(:keep_open) do |out|
+    connections << out
+    # 死んでいるコネクションを排除
+    connections.reject!(&:closed?)
+  end
 end
 
 post '/message' do
@@ -1937,10 +1935,10 @@ set :protection, :session => true
   </dd>
   <dd>デフォルトは無効。</dd>
 
-  <dt>add_charsets</dt>
+  <dt>add_charset</dt>
   <dd>
     Mimeタイプ <tt>content_type</tt>ヘルパーが自動的にキャラクタセット情報をここに追加する。このオプションは書き換えるのではなく、値を追加するようにすること。
-    <tt>settings.add_charsets << "application/foobar"</tt>
+    <tt>settings.add_charset << "application/foobar"</tt>
   </dd>
 
   <dt>app_file</dt>
@@ -2162,7 +2160,7 @@ Sinatraを開発環境の下で実行している場合は、特別な`not_found
 
 ## Rackミドルウェア(Rack Middleware)
 
-SinatraはRuby製Webフレームワークのミニマルな標準的インタフェースである[Rack](http://rack.rubyforge.org/)上に構築されています。アプリケーションデベロッパーにとってRackにおける最も興味深い機能は、「ミドルウェア(middleware)」をサポートしていることであり、これは、サーバとアプリケーションとの間に置かれ、HTTPリクエスト/レスポンスを監視および/または操作することで、各種の汎用的機能を提供するコンポーネントです。
+SinatraはRuby製Webフレームワークのミニマルな標準的インタフェースである[Rack](http://rack.github.io/)上に構築されています。アプリケーションデベロッパーにとってRackにおける最も興味深い機能は、「ミドルウェア(middleware)」をサポートしていることであり、これは、サーバとアプリケーションとの間に置かれ、HTTPリクエスト/レスポンスを監視および/または操作することで、各種の汎用的機能を提供するコンポーネントです。
 
 Sinatraはトップレベルの`use`メソッドを通して、Rackミドルウェアパイプラインの構築を楽にします。
 
@@ -2178,7 +2176,7 @@ get '/hello' do
 end
 ```
 
-`use`の文法は、[Rack::Builder](http://rack.rubyforge.org/doc/classes/Rack/Builder.html)DSLで定義されているそれ（rackupファイルで最もよく使われる）と同じです。例えば `use`メソッドは複数の引数、そしてブロックも取ることができます。
+`use`の文法は、[Rack::Builder](http://rubydoc.info/github/rack/rack/master/Rack/Builder)DSLで定義されているそれ（rackupファイルで最もよく使われる）と同じです。例えば `use`メソッドは複数の引数、そしてブロックも取ることができます。
 
 ``` ruby
 use Rack::Auth::Basic do |username, password|
@@ -2719,7 +2717,7 @@ Sinatraは、[Semantic Versioning](http://semver.org/)におけるSemVerおよ�
 * [Twitter](http://twitter.com/sinatra)
 * [メーリングリスト](http://groups.google.com/group/sinatrarb/topics)
 * http://freenode.net上のIRC: [#sinatra](irc://chat.freenode.net/#sinatra)
-* [Sinatra Book](http://sinatra-book.gittr.com) クックブック、チュートリアル
+* [Sinatra Book](https://github.com/sinatra/sinatra-book/) クックブック、チュートリアル
 * [Sinatra Recipes](http://recipes.sinatrarb.com/) コミュニティによるレシピ集
 * http://rubydoc.info上のAPIドキュメント: [最新版(latest release)用](http://rubydoc.info/gems/sinatra)または[現在のHEAD用](http://rubydoc.info/github/sinatra/sinatra)
 * [CIサーバ](http://travis-ci.org/sinatra/sinatra)

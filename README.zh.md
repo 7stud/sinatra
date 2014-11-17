@@ -1458,7 +1458,7 @@ end
         </p>
     </dd>
 
-    <dt>add_charsets</dt>
+    <dt>add_charset</dt>
     <dd>
         <p>
             设定 <tt>content_type</tt> 辅助方法会 自动加上字符集信息的多媒体类型。
@@ -1466,7 +1466,7 @@ end
 
         <p>
             你应该添加而不是覆盖这个选项:
-            <tt>settings.add_charsets << "application/foobar"</tt>
+            <tt>settings.add_charset << "application/foobar"</tt>
         </p>
     </dd>
 
@@ -1660,7 +1660,7 @@ end
 
 ## Rack 中间件
 
-Sinatra 依靠 [Rack](http://rack.rubyforge.org/), 一个面向Ruby
+Sinatra 依靠 [Rack](http://rack.github.io/), 一个面向Ruby
 web框架的最小标准接口。
 Rack的一个最有趣的面向应用开发者的能力是支持“中间件”——坐落在服务器和你的应用之间，
 监视 并/或 操作HTTP请求/响应以 提供多样类型的常用功能。
@@ -1680,7 +1680,7 @@ end
 ~~~~
 
 `use` 的语义和在
-[Rack::Builder](http://rack.rubyforge.org/doc/classes/Rack/Builder.html)
+[Rack::Builder](http://rubydoc.info/github/rack/rack/master/Rack/Builder)
 DSL(在rack文件中最频繁使用)中定义的完全一样。例如，`use` 方法接受
 多个/可变 参数，包括代码块：
 
@@ -2157,10 +2157,10 @@ gem 'activerecord', '~> 3.0'  # 也许你还需要 ActiveRecord 3.x
 -   [IRC: \#sinatra](irc://chat.freenode.net/#sinatra) on
     [freenode.net](http://freenode.net)
 
--   [Sinatra宝典](http://sinatra-book.gittr.com/) Cookbook教程
+-   [Sinatra宝典](https://github.com/sinatra/sinatra-book/) Cookbook教程
 
 -   [Sinatra使用技巧](http://recipes.sinatrarb.com/) 网友贡献的实用技巧
-   
+
 -   [最新版本](http://rubydoc.info/gems/sinatra)API文档；[http://rubydoc.info](http://rubydoc.info)的[当前HEAD](http://rubydoc.info/github/sinatra/sinatra)
 
 -   [CI服务器](http://travis-ci.org/sinatra/sinatra)

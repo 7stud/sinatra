@@ -14,7 +14,7 @@ require 'sinatra/version'
 
 module Sinatra
   # The request object. See Rack::Request for more info:
-  # http://rack.rubyforge.org/doc/classes/Rack/Request.html
+  # http://rubydoc.info/github/rack/rack/master/Rack/Request
   class Request < Rack::Request
     HEADER_PARAM = /\s*[\w.]+=(?:[\w.]+|"(?:[^"\\]|\\.)*")?\s*/
     HEADER_VALUE_WITH_PARAMS = /(?:(?:\w+|\*)\/(?:\w+(?:\.|\-|\+)?|\*)*)\s*(?:;#{HEADER_PARAM})*/
@@ -116,8 +116,8 @@ module Sinatra
 
   # The response object. See Rack::Response and Rack::Response::Helpers for
   # more info:
-  # http://rack.rubyforge.org/doc/classes/Rack/Response.html
-  # http://rack.rubyforge.org/doc/classes/Rack/Response/Helpers.html
+  # http://rubydoc.info/github/rack/rack/master/Rack/Response
+  # http://rubydoc.info/github/rack/rack/master/Rack/Response/Helpers
   class Response < Rack::Response
     DROP_BODY_RESPONSES = [204, 205, 304]
     def initialize(*)
@@ -1504,8 +1504,7 @@ module Sinatra
       def start_server(handler, server_settings, handler_name)
         handler.run(self, server_settings) do |server|
           unless handler_name =~ /cgi/i
-            $stderr.puts "== Sinatra/#{Sinatra::VERSION} has taken the stage " +
-            "on #{port} for #{environment} with backup from #{handler_name}"
+            $stderr.puts "== Sinatra (v#{Sinatra::VERSION}) has taken the stage on #{port} for #{environment} with backup from #{handler_name}"
           end
 
           setup_traps
@@ -1949,7 +1948,7 @@ module Sinatra
             <img src='#{uri "/__sinatra__/404.png"}'>
             <div id="c">
               Try this:
-              <pre>#{code}</pre>
+              <pre>#{Rack::Utils.escape_html(code)}</pre>
             </div>
           </body>
           </html>
@@ -2027,8 +2026,7 @@ module Sinatra
     end
   end
 
-  # Create a new Sinatra application. The block is evaluated in the new app's
-  # class scope.
+  # Create a new Sinatra application; the block is evaluated in the class scope.
   def self.new(base = Base, &block)
     base = Class.new(base)
     base.class_eval(&block) if block_given?

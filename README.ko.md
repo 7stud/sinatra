@@ -559,7 +559,7 @@ get('/') { markdown :index }
 <table>
   <tr>
     <td>의존성</td>
-    <td><a href="http://builder.rubyforge.org/">builder</a></td>
+    <td><a href="https://github.com/jimweirich/builder">builder</a></td>
   </tr>
   <tr>
     <td>파일 확장자</td>
@@ -672,8 +672,8 @@ Liquid 템플릿에서는 루비 메서드(`yield` 제외)를 호출할 수 없�
       <a href="https://github.com/rtomayko/rdiscount" title="RDiscount">RDiscount</a>,
       <a href="https://github.com/vmg/redcarpet" title="RedCarpet">RedCarpet</a>,
       <a href="http://deveiate.org/projects/BlueCloth" title="BlueCloth">BlueCloth</a>,
-      <a href="http://kramdown.rubyforge.org/" title="kramdown">kramdown</a>,
-      <a href="http://maruku.rubyforge.org/" title="maruku">maruku</a>
+      <a href="http://kramdown.gettalong.org/" title="kramdown">kramdown</a>,
+      <a href="https://github.com/bhollis/maruku" title="maruku">maruku</a>
       중 아무거나
     </td>
   </tr>
@@ -745,7 +745,7 @@ Textile에서 루비를 호출할 수 없기 때문에, Textile으로 작성된 
 <table>
   <tr>
     <td>의존성</td>
-    <td><a href="http://rdoc.rubyforge.org/">rdoc</a></td>
+    <td><a href="http://rdoc.sourceforge.net/">rdoc</a></td>
   </tr>
   <tr>
     <td>파일 확장자</td>
@@ -800,7 +800,7 @@ AsciiDoc 템플릿에서는 루비 메서드를 호출할 수 없기
 <table>
   <tr>
     <td>의존성</td>
-    <td><a href="http://radius.rubyforge.org/">radius</a></td>
+    <td><a href="https://github.com/jlong/radius">radius</a></td>
   </tr>
   <tr>
     <td>파일 확장자</td>
@@ -1525,13 +1525,11 @@ connections = []
 
 get '/subscribe' do
   # register a client's interest in server events
-  stream(:keep_open) { |out| connections << out }
-
-  # purge dead connections
-  connections.reject!(&:closed?)
-
-  # acknowledge
-  "subscribed"
+  stream(:keep_open) do |out|
+    connections << out
+    # purge dead connections
+    connections.reject!(&:closed?)
+  end
 end
 
 post '/message' do
@@ -2065,11 +2063,11 @@ set :protection, :session => true
   </dd>
   <dd>기본값은 비활성.</dd>
 
-  <dt>add_charsets</dt>
+  <dt>add_charset</dt>
   <dd>
     <tt>content_type</tt>가 문자셋 정보에 자동으로 추가하게 될 마임(mime) 타입.
      이 옵션은 오버라이딩하지 말고 추가해야 함.
-    <tt>settings.add_charsets << "application/foobar"</tt>
+    <tt>settings.add_charset << "application/foobar"</tt>
   </dd>
 
   <dt>app_file</dt>
@@ -2327,7 +2325,7 @@ Sinatra는 개발 환경에서 동작할 때 브라우저에 괜찮은 스택 �
 
 ## Rack 미들웨어(Rack Middleware)
 
-Sinatra는 [Rack](http://rack.rubyforge.org/) 위에서 동작하며, Rack은 루비 웹
+Sinatra는 [Rack](http://rack.github.io/) 위에서 동작하며, Rack은 루비 웹
 프레임워크를 위한 최소한의 표준 인터페이스입니다. Rack이 애플리케이션 개발자들에게
 제공하는 가장 흥미로운 기능은 "미들웨어(middleware)"에 대한 지원입니다.
 여기서 미들웨어란 서버와 여러분의 애플리케이션 사이에 위치하면서 HTTP 요청/응답을
@@ -2348,7 +2346,7 @@ get '/hello' do
 end
 ```
 
-`use`문법은 [Rack::Builder](http://rack.rubyforge.org/doc/classes/Rack/Builder.html]) DSL
+`use`문법은 [Rack::Builder](http://rubydoc.info/github/rack/rack/master/Rack/Builder]) DSL
 (rackup 파일에서 가장 많이 사용)에서 정의한 것과 동일합니다. 예를 들어, `use` 메서드는
 블록이나 여러 개의/가변적인 인자도 받을 수 있습니다.
 
@@ -2917,7 +2915,7 @@ SemVerTag를 준수합니다.
 * [트위터](http://twitter.com/sinatra)
 * [메일링 리스트](http://groups.google.com/group/sinatrarb/topics)
 * IRC: [#sinatra](irc://chat.freenode.net/#sinatra) http://freenode.net
-* [Sinatra Book](http://sinatra-book.gittr.com) Cookbook 튜토리얼
+* [Sinatra Book](https://github.com/sinatra/sinatra-book/) Cookbook 튜토리얼
 * [Sinatra Recipes](http://recipes.sinatrarb.com/) 커뮤니티가 만드는 레시피
 * http://rubydoc.info에 있는 [최종 릴리스](http://rubydoc.info/gems/sinatra)
   또는 [current HEAD](http://rubydoc.info/github/sinatra/sinatra)에 대한 API 문서
